@@ -1,3 +1,4 @@
+using Assets.Scripts.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,13 @@ using UnityEngine.UI;
 
 public class CatSpotManager : MonoBehaviour
 {
-    [SerializeField] TMP_Text foundCatsCounter;
-    [SerializeField] Button mapBackground;
-    [SerializeField] ParticleSystem correctClickVFX;
-    [SerializeField] ParticleSystem wrongClickVFX;
-    [SerializeField] Camera uiCamera;
-    [SerializeField] MapDrag mapDrag;
+    [SerializeField] private TMP_Text foundCatsCounter;
+    [SerializeField] private Button mapBackground;
+    [SerializeField] private ParticleSystem correctClickVFX;
+    [SerializeField] private ParticleSystem wrongClickVFX;
+    [SerializeField] private Camera uiCamera;
+    [SerializeField] private MapDrag mapDrag;
+    [SerializeField] private HintManager hintManager;
 
     internal Action onWrongSpotClicked;
 
@@ -30,6 +32,17 @@ public class CatSpotManager : MonoBehaviour
         SetCounterText();
 
         mapBackground.onClick.AddListener(OnWrongSpotClicked);
+        hintManager.onHintUsed += OnHintUsed;
+    }
+
+    private void OnHintUsed()
+    {
+        var availableCats = allCats.Where(cat => !cat.isClicked).ToList();
+        if (availableCats.Count == 0) return;
+
+        int randomIndex = UnityEngine.Random.Range(0, availableCats.Count);
+        CatSpot catToReveal = availableCats[randomIndex];
+        catToReveal.ShowHintArrow();
     }
 
     private void OnCatClicked(CatSpot catspot)

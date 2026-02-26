@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] TMP_Text livesCounter;
+    [SerializeField] private TMP_Text livesCounter;
     [SerializeField] private int totalLives;
     [SerializeField] private CatSpotManager catSpotManager;
 

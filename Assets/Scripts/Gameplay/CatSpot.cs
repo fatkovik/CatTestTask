@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CatSpot : MonoBehaviour
 {
+    [SerializeField] private GameObject hintArrow;
+
     private Button catButton;
     private Image catImage;
 
@@ -25,6 +28,23 @@ public class CatSpot : MonoBehaviour
         catClicked?.Invoke(this);
 
         isClicked = true;
+    }
+
+    public void ShowHintArrow()
+    {
+        if (hintArrow == null)
+        {
+            return;
+        }
+
+        StartCoroutine(ShowHintRoutine(2));
+
+        IEnumerator ShowHintRoutine(float seconds)
+        {
+            hintArrow.SetActive(true);
+            yield return new WaitForSeconds(seconds);
+            hintArrow.SetActive(false);
+        }
     }
 
     private void OnDestroy()
