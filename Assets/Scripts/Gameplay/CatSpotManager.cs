@@ -17,6 +17,7 @@ public class CatSpotManager : MonoBehaviour
     [SerializeField] private HintManager hintManager;
 
     internal Action onWrongSpotClicked;
+    internal Action onAllCatsClicked;
 
     private List<CatSpot> allCats;
     private int catsClickedCount = 0;
@@ -52,6 +53,11 @@ public class CatSpotManager : MonoBehaviour
         catsClickedCount++;
         SpawnVFX(correctClickVFX);
         SetCounterText();
+
+        if (catsClickedCount == totalCatsCount)
+        {
+            onAllCatsClicked?.Invoke();
+        }
     }
 
     private void OnWrongSpotClicked()

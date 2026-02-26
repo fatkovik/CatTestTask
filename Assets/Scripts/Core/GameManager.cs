@@ -1,8 +1,12 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject gameWinPanel;
+    [SerializeField] private GameObject gameLostPanel;
+
     [SerializeField] private TMP_Text livesCounter;
     [SerializeField] private int totalLives;
     [SerializeField] private CatSpotManager catSpotManager;
@@ -13,6 +17,15 @@ public class GameManager : MonoBehaviour
     {
         _currentLives = totalLives;
         catSpotManager.onWrongSpotClicked += OnLifeLost;
+        catSpotManager.onAllCatsClicked += OnGameWin;
+    }
+
+    private void OnGameWin()
+    {
+        if (_currentLives > 0)
+        {
+            gameWinPanel.SetActive(true);
+        }
     }
 
     private void OnLifeLost()
@@ -22,7 +35,7 @@ public class GameManager : MonoBehaviour
 
         if (_currentLives <= 0)
         {
-            Debug.Log("Game Over!");
+            gameLostPanel.SetActive(true);
         }
     }
 
@@ -34,5 +47,6 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         catSpotManager.onWrongSpotClicked -= OnLifeLost;
+        catSpotManager.onAllCatsClicked -= OnGameWin;
     }
 }
