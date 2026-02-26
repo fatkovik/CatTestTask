@@ -12,6 +12,7 @@ public class CatSpotManager : MonoBehaviour
     [SerializeField] ParticleSystem correctClickVFX;
     [SerializeField] ParticleSystem wrongClickVFX;
     [SerializeField] Camera uiCamera;
+    [SerializeField] MapDrag mapDrag;
 
     internal Action onWrongSpotClicked;
 
@@ -33,10 +34,7 @@ public class CatSpotManager : MonoBehaviour
 
     private void OnCatClicked(CatSpot catspot)
     {
-        if (catspot.isClicked)
-        {
-            return;
-        }
+        if (catspot.isClicked) return;
 
         catsClickedCount++;
         SpawnVFX(correctClickVFX);
@@ -45,6 +43,8 @@ public class CatSpotManager : MonoBehaviour
 
     private void OnWrongSpotClicked()
     {
+        if (mapDrag != null && mapDrag.WasDragging) return;
+
         SpawnVFX(wrongClickVFX);
         onWrongSpotClicked?.Invoke();
     }

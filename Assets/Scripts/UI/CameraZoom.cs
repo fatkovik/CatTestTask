@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraZoom : MonoBehaviour, IBeginDragHandler, IDragHandler, IScrollHandler
+public class CameraZoom : MonoBehaviour, IScrollHandler
 {
     [SerializeField] private float minScale = 1f;
     [SerializeField] private float maxScale = 3f;
@@ -13,13 +13,11 @@ public class CameraZoom : MonoBehaviour, IBeginDragHandler, IDragHandler, IScrol
 
     private RectTransform _rectTransform;
     private RectTransform _parentRectTransform;
-    private Canvas _canvas;
 
     private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();
         _parentRectTransform = transform.parent.GetComponent<RectTransform>();
-        _canvas = GetComponentInParent<Canvas>().rootCanvas;
 
         _targetScale = _rectTransform.localScale.x;
     }
@@ -32,27 +30,12 @@ public class CameraZoom : MonoBehaviour, IBeginDragHandler, IDragHandler, IScrol
         ClampPosition();
     }
 
-    // ── Scroll wheel ─────────────────────────────────────────────────────────
-
     public void OnScroll(PointerEventData eventData)
     {
         _targetScale += eventData.scrollDelta.y * zoomMultiplier * 0.1f;
         _targetScale = Mathf.Clamp(_targetScale, minScale, maxScale);
     }
 
-    // ── Drag to pan ──────────────────────────────────────────────────────────
-
-    public void OnBeginDrag(PointerEventData eventData) { }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
-        ClampPosition();
-    }
-
-    // ── Bounds ───────────────────────────────────────────────────────────────
-
-    // Assumes mapContent pivot = (0.5, 0.5)
     private void ClampPosition()
     {
         float scale = _rectTransform.localScale.x;

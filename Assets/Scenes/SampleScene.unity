@@ -1120,7 +1120,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919619086}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1130,11 +1130,11 @@ RectTransform:
   - {fileID: 1964523890}
   - {fileID: 266003662}
   - {fileID: 1883728479}
-  m_Father: {fileID: 1526892333}
+  m_Father: {fileID: 1485425712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &999887471
@@ -1356,6 +1356,7 @@ MonoBehaviour:
   correctClickVFX: {fileID: 6182515518075428515, guid: 50d45f66ecacac448a73cf39a035f299, type: 3}
   wrongClickVFX: {fileID: 6482052670198881040, guid: c49a832d9953ce74fbcf133111989a20, type: 3}
   uiCamera: {fileID: 519420031}
+  mapDrag: {fileID: 1485425716}
 --- !u!1 &1485425711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,6 +1369,7 @@ GameObject:
   - component: {fileID: 1485425714}
   - component: {fileID: 1485425713}
   - component: {fileID: 1485425715}
+  - component: {fileID: 1485425716}
   m_Layer: 5
   m_Name: BackgroundImage
   m_TagString: Untagged
@@ -1386,14 +1388,15 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 919619087}
   m_Father: {fileID: 1526892333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: -500}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1000, y: 1000}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1485425713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1476,6 +1479,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1485425716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485425711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af11c22a6d3bc5c4cac10e4549eaa817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapDrag
+  mapContent: {fileID: 1485425712}
 --- !u!1 &1526892332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,7 +1524,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1485425712}
-  - {fileID: 919619087}
   m_Father: {fileID: 850305906}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
