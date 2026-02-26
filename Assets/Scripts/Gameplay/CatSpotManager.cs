@@ -9,6 +9,9 @@ public class CatSpotManager : MonoBehaviour
 {
     [SerializeField] TMP_Text foundCatsCounter;
     [SerializeField] Button mapBackground;
+    [SerializeField] ParticleSystem correctClickVFX;
+    [SerializeField] ParticleSystem wrongClickVFX;
+    [SerializeField] Camera uiCamera;
 
     internal Action onWrongSpotClicked;
 
@@ -36,13 +39,26 @@ public class CatSpotManager : MonoBehaviour
         }
 
         catsClickedCount++;
-
+        SpawnVFX(correctClickVFX);
         SetCounterText();
     }
 
     private void OnWrongSpotClicked()
     {
+        SpawnVFX(wrongClickVFX);
         onWrongSpotClicked?.Invoke();
+    }
+
+    private void SpawnVFX(ParticleSystem prefab)
+    {
+        if (prefab == null) return;
+
+        Vector3 screenPos = Input.mousePosition;
+        screenPos.z = 10f;
+        Vector3 worldPos = uiCamera.ScreenToWorldPoint(screenPos);
+
+        ParticleSystem vfx = Instantiate(prefab, worldPos, Quaternion.identity);
+        Destroy(vfx.gameObject, vfx.main.duration + vfx.main.startLifetime.constantMax);
     }
 
     private void SetCounterText()
