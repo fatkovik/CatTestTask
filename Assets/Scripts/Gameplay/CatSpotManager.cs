@@ -1,13 +1,16 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CatSpotManager : MonoBehaviour
 {
-    [SerializeField] TMP_Text tmpCounter;
+    [SerializeField] TMP_Text foundCatsCounter;
+    [SerializeField] Button mapBackground;
+
+    internal Action onWrongSpotClicked;
 
     private List<CatSpot> allCats;
     private int catsClickedCount = 0;
@@ -21,6 +24,8 @@ public class CatSpotManager : MonoBehaviour
 
         totalCatsCount = allCats.Count;
         SetCounterText();
+
+        mapBackground.onClick.AddListener(OnWrongSpotClicked);
     }
 
     private void OnCatClicked(CatSpot catspot)
@@ -35,13 +40,19 @@ public class CatSpotManager : MonoBehaviour
         SetCounterText();
     }
 
+    private void OnWrongSpotClicked()
+    {
+        onWrongSpotClicked?.Invoke();
+    }
+
     private void SetCounterText()
     {
-        tmpCounter.text = $"{catsClickedCount}/{totalCatsCount}";
+        foundCatsCounter.text = $"{catsClickedCount}/{totalCatsCount}";
     }
 
     private void OnDisable()
     {
         allCats.ForEach(cat => cat.catClicked -= OnCatClicked);
+        mapBackground.onClick.RemoveListener(OnWrongSpotClicked);
     }
 }
