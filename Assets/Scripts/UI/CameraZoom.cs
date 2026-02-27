@@ -7,9 +7,11 @@ public class CameraZoom : MonoBehaviour, IScrollHandler
     [SerializeField] private float maxScale = 3f;
     [SerializeField] private float zoomMultiplier = 2f;
     [SerializeField] private float smoothTime = 0.25f;
+    [SerializeField] private float pinchSensitivity = 0.005f;
 
     private float _targetScale;
     private float _velocity;
+    private float _prevPinchDistance;
 
     private RectTransform _rectTransform;
     private RectTransform _parentRectTransform;
@@ -24,10 +26,37 @@ public class CameraZoom : MonoBehaviour, IScrollHandler
 
     private void Update()
     {
+        HandlePinchZoom();
+
         float currentScale = _rectTransform.localScale.x;
         float smoothed = Mathf.SmoothDamp(currentScale, _targetScale, ref _velocity, smoothTime);
         _rectTransform.localScale = Vector3.one * smoothed;
         ClampPosition();
+    }
+
+    private void HandlePinchZoom()
+    {
+        if (Input.touchCount != 2)
+        {
+            _prevPinchDistance = 0f;
+            return;
+        }
+
+        Touch touch0 = Input.GetTouch(0);
+        Touch touch1 = Input.GetTouch(1);
+
+        float currentDistance = Vector2.Distance(touch0.position, touch1.position);
+
+        if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+        {
+            _prevPinchDistance = currentDistance;
+            return;
+        }
+
+        float delta = currentDistance - _prevPinchDistance;
+        _targetScale += delta * pinchSensitivity * zoomMultiplier;
+        _targetScale = Mathf.Clamp(_targetScale, minScale, maxScale);
+        _prevPinchDistance = currentDistance;
     }
 
     public void OnScroll(PointerEventData eventData)
